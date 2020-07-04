@@ -58,15 +58,15 @@ public class Main {
         }
         //2. получаем из настроек мониторимый товар
         String[] keyword = {"pod","line6"};
+        String[] groups = {"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"};
 
-        //3. Создаём поисковик для каждого ключевого слова
-        Finder testFind = new Finder("https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK",keyword);
-        testFind.start();
-
-        //4. Поиск по группам
-
-
+        //3. Создаём поисковик для ключевого слова в каждой группу
+        for (String groupName: groups) {
+            Finder testFind = new Finder(groupName,keyword);
+            testFind.start();
+        }
         //5. таймер раз в час
+
     }
 
 }
