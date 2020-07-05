@@ -1,10 +1,13 @@
 package worker;
 import common.Ads;
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.jsoup.Jsoup;
 
@@ -21,7 +24,17 @@ public class Finder {
 
     public Finder(String urlCatalog, String[] keywords) {
         //Выбор браузера - дефолтный для ОС
-        driver=new SafariDriver();
+        String currentOs = System.getProperty("os.name");
+        if (currentOs.startsWith("Windows")){
+            System.out.println("Начало установки");
+            ChromeDriverManager.chromedriver().setup();
+            System.out.println("Конец установки");
+            //WebDriverManager.chromedriver().setup();
+            driver = new ChromeDriver();
+        }
+        else {
+            driver = new SafariDriver();
+        }
         this.urlCatalog = urlCatalog;
         this.keywords = keywords;
     }

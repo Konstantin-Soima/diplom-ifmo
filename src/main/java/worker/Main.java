@@ -4,9 +4,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +17,7 @@ public class Main {
         TrayIcon trayIcon = null;
         if (SystemTray.isSupported()) { //Проверка наличия трея (в линуксе с Deepin, LXDM может и не быть)
             SystemTray tray = SystemTray.getSystemTray();
-            Image image = Toolkit.getDefaultToolkit().getImage("sources/tenor.gif"); //иконка в трей
+
             //События для трея
             ActionListener listenerExit = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -44,10 +46,21 @@ public class Main {
             MenuItem exitItem = new MenuItem("Выход");
             exitItem.addActionListener(listenerExit);
             popup.add(exitItem);
-            trayIcon = new TrayIcon(image, "Поиск сомнительных обьявлений", popup);
+            String currentOs = System.getProperty("os.name");
+            Image image;
+            if (currentOs.startsWith("Windows")) {
+                Image trayIconImage = Toolkit.getDefaultToolkit().getImage("sources/find.png");
+                int trayIconWidth = new TrayIcon(trayIconImage).getSize().width;
+                trayIcon = new TrayIcon(trayIconImage.getScaledInstance(trayIconWidth, -1, Image.SCALE_SMOOTH), "Поиск сомнительных обьявлений", popup);
+            }
+            else {
+                image = Toolkit.getDefaultToolkit().getImage("sources/tenor.gif"); //иконка в трей
+                trayIcon = new TrayIcon(image, "Поиск сомнительных обьявлений", popup);
+            }
             trayIcon.addActionListener(listenerAdd);
             trayIcon.addActionListener(listenerWatch);
             trayIcon.addActionListener(listenerExit);
+
             try {
                 tray.add(trayIcon);
             } catch (AWTException e) {
