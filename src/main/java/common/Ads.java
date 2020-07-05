@@ -1,6 +1,8 @@
 package common;
 
-public class Ads {
+import java.io.Serializable;
+
+public class Ads implements Serializable {
     //сериализация
 
     //ссылка
@@ -8,6 +10,7 @@ public class Ads {
     //Название
     private String name;
     //фотки
+    private Ima
     //текст
     private String content;
     //объект телефона
