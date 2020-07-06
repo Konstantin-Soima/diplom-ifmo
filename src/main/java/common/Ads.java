@@ -10,7 +10,6 @@ public class Ads implements Serializable {
     //Название
     private String name;
     //фотки
-    private Ima
     //текст
     private String content;
     //объект телефона

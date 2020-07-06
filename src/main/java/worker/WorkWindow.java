@@ -1,6 +1,7 @@
 package worker;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 public class WorkWindow extends Application {
@@ -12,6 +13,6 @@ public class WorkWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         //TODO: форма ввода, выбор групп, ключевые слова
-
+        Parent root = FXML
     }
 }
