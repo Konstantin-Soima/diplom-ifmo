@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Ads implements Serializable {
     //сериализация
-
+    private String status;
     //ссылка
     private String link;
     //Название
@@ -16,6 +16,14 @@ public class Ads implements Serializable {
     //дата размещения
     //контактные данные
 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getLink() {
         return link;

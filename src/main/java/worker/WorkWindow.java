@@ -13,6 +13,5 @@ public class WorkWindow extends Application {
     @Override
     public void start(Stage primaryStage) {
         //TODO: форма ввода, выбор групп, ключевые слова
-        Parent root = FXML
     }
 }
