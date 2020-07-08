@@ -26,8 +26,8 @@ public class Main {
             ActionListener listenerAdd = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     // Открыть форму добавление поиска
-                    WorkWindowController newWindow = new WorkWindowController();
-
+                    //WorkWindowController newWindow = new WorkWindowController();
+                    WorkWindowController.main(args);
                 }
             };
             PopupMenu popup = new PopupMenu();
@@ -65,7 +65,7 @@ public class Main {
         }
         //2. получаем из настроек мониторимый товар
         String[] keyword = {"pod","line6"};
-        String[] groups = {"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"};
+        String[] groups = {};//{"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"};
 
         //3. Создаём поисковик для ключевого слова в каждой группу
         for (String groupName: groups) {

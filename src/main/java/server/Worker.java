@@ -21,12 +21,7 @@ public class Worker implements Runnable {
                 try{
                     //Если есть в базе - отдать пользователю, если нет и переданно полное - добавить
                     Ads ads = (Ads) inputStream.readObject();
-                    if ("select".equals(ads.getStatus())){
 
-                    } else
-                        if ("set".equals(ads.getStatus())){
-
-                        }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
