@@ -1,14 +1,8 @@
 package worker;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 public class Main {
     public static void main(String[] args) {
@@ -32,7 +26,7 @@ public class Main {
             ActionListener listenerAdd = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     // Открыть форму добавление поиска
-                    WorkWindow newWindow = new WorkWindow();
+                    WorkWindowController newWindow = new WorkWindowController();
 
                 }
             };
