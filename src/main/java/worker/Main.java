@@ -1,8 +1,15 @@
 package worker;
 
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,7 +34,28 @@ public class Main {
                 public void actionPerformed(ActionEvent e) {
                     // Открыть форму добавление поиска
                     //WorkWindowController newWindow = new WorkWindowController();
-                    WorkWindowController.main(args);
+                    //WorkWindowController.main(args);
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+
+                    Platform.startup(() ->
+                    {
+                        // This block will be executed on JavaFX Thread
+
+                    try {
+
+                        fxmlLoader.setLocation(getClass().getResource("/WorkWindow.fxml"));
+                        //WorkWindowController workWindowController=new WorkWindowController();
+                        //fxmlLoader.setController(workWindowController);
+                        Parent root  = fxmlLoader.load();
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
                 }
             };
             PopupMenu popup = new PopupMenu();
