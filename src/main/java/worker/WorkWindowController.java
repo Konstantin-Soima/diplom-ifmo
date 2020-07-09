@@ -2,6 +2,7 @@ package worker;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.Category;
 import common.City;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -23,11 +24,14 @@ import java.util.List;
 
 public class WorkWindowController  {
 
+    @FXML
+    private ListView<Category> categoryList = new ListView<>();
 
     @FXML
     private ListView<City> cityList = new ListView<>();
 
     private ObservableList<City> observableList ;
+    private ObservableList<Category> observableList2 ;
 
 
 
@@ -41,7 +45,7 @@ public class WorkWindowController  {
         System.out.println(listCity.size());
         observableList = FXCollections.observableArrayList(listCity);
         cityList.setItems(observableList);
-        cityList.setCellFactory(param -> new ListCell<City>() {
+        /*cityList.setCellFactory(param -> new ListCell<City>() { //Код для смены выводимых значений
             @Override
             protected void updateItem(City p, boolean empty){
                 super.updateItem(p, empty);
@@ -52,14 +56,34 @@ public class WorkWindowController  {
                     setText(p.getName()); //вывожу просто имя города
                 }
             }
-        });
+        });*/
         //выбор файла при выборе
         cityList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<City>() {
             @Override
             public void changed(ObservableValue<? extends City> observable, City oldValue, City newValue) {
                 // Получаем список категорий
                 System.out.println("Selected item: " + newValue);
-
+                String categoryListJson ="[{\"id\":1,\"name\":\"Музыкальные инструменты\"},{\"id\":2,\"name\":\"Для мтудии и концертов\"},{\"id\":3,\"name\":\"Духовые\"}]";
+                ObjectMapper objectMapper2 = new ObjectMapper();
+                try {
+                    List<Category> listCategory = objectMapper2.readValue(categoryListJson, new TypeReference<List<Category>>(){});
+                    observableList2 = FXCollections.observableArrayList(listCategory);
+                    categoryList.setItems(observableList2);
+                    /*categoryList.setCellFactory(param -> new ListCell<Category>() {
+                        @Override
+                        protected void updateItem(Category p, boolean empty){
+                            super.updateItem(p, empty);
+                            if(empty || p == null || p.getName() == null){
+                                setText("");
+                            }
+                            else{
+                                setText(p.getName()); //вывожу просто имя города
+                            }
+                        }
+                    });*/
+                } catch (Exception e) {
+                e.printStackTrace();
+            }
             }
         });
 

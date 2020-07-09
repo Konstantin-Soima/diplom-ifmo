@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="604.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="worker.WorkWindowController">
    <children>
-      <ListView layoutX="360.0" layoutY="317.0" prefHeight="281.0" prefWidth="485.0" />
+      <ListView layoutX="360.0" layoutY="317.0" prefHeight="281.0" prefWidth="485.0" fx:id="categoryList" />
       <Button layoutX="11.0" layoutY="549.0" mnemonicParsing="false" text="Отслеживать" />
       <Label layoutX="14.0" layoutY="67.0" text="Ключевые слова для поиска" />
       <Label layoutX="360.0" layoutY="295.0" text="Выбирите категорию:" />
