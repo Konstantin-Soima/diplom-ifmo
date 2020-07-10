@@ -104,16 +104,20 @@ public class Main {
         String title = properties.getProperty("title");
         String[] keyword = properties.getProperty("keywords").split(",");
         
-        String[] groups = {};//{"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"}
+        String[] groups = {"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"};
         DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ld = LocalDate.parse(properties.getProperty("datestart"), DATEFORMATTER);
-        //3. Создаём поисковик для ключевого слова в каждой группу
-        for (String groupName: groups) {
-            Finder testFind = new Finder(groupName,keyword);
-            testFind.start();
-        }
-        //5. таймер раз в час
 
+        //3. Создаём поисковик для ключевого слова в каждой группу
+        try {
+            for (String groupName : groups) {
+                Finder testFind = new Finder(groupName, keyword);
+                testFind.start();
+            }
+            //5. таймер раз в час
+        } catch (Exception e ){
+            e.printStackTrace();
+        }
     }
 
 }
