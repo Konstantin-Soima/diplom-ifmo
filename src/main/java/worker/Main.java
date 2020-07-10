@@ -10,6 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
@@ -39,8 +43,6 @@ public class Main {
 
                     Platform.startup(() ->
                     {
-                        // This block will be executed on JavaFX Thread
-
                     try {
 
                         fxmlLoader.setLocation(getClass().getResource("/WorkWindow.fxml"));
@@ -51,6 +53,7 @@ public class Main {
                         Scene scene = new Scene(root);
                         stage.setScene(scene);
                         stage.show();
+                        System.out.println("закончился показ окна");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -92,9 +95,18 @@ public class Main {
 
         }
         //2. получаем из настроек мониторимый товар
-        String[] keyword = {"pod","line6"};
-        String[] groups = {};//{"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"};
-
+        Properties properties = new Properties();
+        try (InputStream input = WorkWindowController.class.getClassLoader().getResourceAsStream("find.properties")){
+            properties.load(input);
+        } catch (IOException e){
+            e.printStackTrace();
+        } //TODO: проверка на наличие настроек, если нет
+        String title = properties.getProperty("title");
+        String[] keyword = properties.getProperty("keywords").split(",");
+        
+        String[] groups = {};//{"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"}
+        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ld = LocalDate.parse(properties.getProperty("datestart"), DATEFORMATTER);
         //3. Создаём поисковик для ключевого слова в каждой группу
         for (String groupName: groups) {
             Finder testFind = new Finder(groupName,keyword);

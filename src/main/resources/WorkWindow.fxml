@@ -17,7 +17,7 @@
       <Label layoutX="14.0" layoutY="25.0" text="Название" />
       <TextArea layoutX="14.0" layoutY="84.0" prefHeight="200.0" prefWidth="343.0" fx:id="textAreaKeyword"/>
       <TextField layoutX="14.0" layoutY="42.0" prefHeight="25.0" prefWidth="343.0" fx:id="textFieldTitle"/>
-      <DatePicker layoutX="169.0" layoutY="295.0" />
+      <DatePicker layoutX="169.0" layoutY="295.0" fx:id="datePickerCalendar" />
       <Label layoutX="14.0" layoutY="300.0" text="Начиная с даты" />
       <Label layoutX="360.0" layoutY="17.0" text="Выбирите город" />
       <ListView layoutX="360.0" layoutY="34.0" prefHeight="260.0" prefWidth="485.0" fx:id="cityList"  />
