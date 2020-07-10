@@ -11,10 +11,36 @@ public class Ads implements Serializable {
     //фотки
     //текст
     private String content;
-    //объект телефона
+    //объект телефона (не телефон а data:image)
+    private String phoneImg;
     //дата размещения
     //контактные данные
+    private String contactName;
+    private String contactLink;
 
+    public String getPhoneImg() {
+        return phoneImg;
+    }
+
+    public void setPhoneImg(String phoneImg) {
+        this.phoneImg = phoneImg;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactLink() {
+        return contactLink;
+    }
+
+    public void setContactLink(String contactLink) {
+        this.contactLink = contactLink;
+    }
 
     public String getLink() {
         return link;
@@ -40,12 +66,17 @@ public class Ads implements Serializable {
         this.content = content;
     }
 
+    public boolean isEmpty(){
+        return link == null || link.isEmpty();
+
+    }
     @Override
     public String toString() {
         return "Ads{" +
                 "link='" + link + '\'' +
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
+                ", image='" + phoneImg + '\'' +
                 '}';
     }
 }
