@@ -55,7 +55,8 @@ public class WorkWindowController  {
         String cityListJson = Jsoup.connect("http://188.242.232.214:8080/city").ignoreContentType(true).execute().body();
         System.out.println(cityListJson);
         ObjectMapper objectMapper = new ObjectMapper();
-        List<City> listCity = objectMapper.readValue(cityListJson, new TypeReference<List<City>>(){});
+        List<City> listCity = objectMapper.readValue(cityListJson, new TypeReference<List<City>>() {
+        });
         System.out.println(listCity.size());
         observableList = FXCollections.observableArrayList(listCity);
         cityList.setItems(observableList);
@@ -66,38 +67,37 @@ public class WorkWindowController  {
                 // Получаем список категорий
                 System.out.println("Selected item: " + newValue);
                 try {
-                    String categoryListJson = Jsoup.connect("http://188.242.232.214:8080/categoryByCity/"+newValue.getId()).ignoreContentType(true).execute().body();
-                System.out.println(cityListJson);
-ObjectMapper objectMapper2 = new ObjectMapper();
+                    String categoryListJson = Jsoup.connect("http://188.242.232.214:8080/categoryByCity/" + newValue.getId()).ignoreContentType(true).execute().body();
+                    System.out.println(cityListJson);
+                    ObjectMapper objectMapper2 = new ObjectMapper();
 
-                    List<Category> listCategory = objectMapper2.readValue(categoryListJson, new TypeReference<List<Category>>(){});
+                    List<Category> listCategory = objectMapper2.readValue(categoryListJson, new TypeReference<List<Category>>() {
+                    });
                     observableList2 = FXCollections.observableArrayList(listCategory);
                     categoryList.setItems(observableList2);
                     categoryList.setCellFactory(param -> new ListCell<Category>() {
                         @Override
-                        protected void updateItem(Category p, boolean empty){
+                        protected void updateItem(Category p, boolean empty) {
                             System.out.println(p);
                             super.updateItem(p, empty);
-                            if(empty || p == null || p.getName() == null){
+                            if (empty || p == null || p.getName() == null) {
                                 setText("");
-                            }
-                            else{
+                            } else {
                                 setText(p.getName()); //вывожу просто название группы
                             }
                         }
                     });
                 } catch (Exception e) {
-                e.printStackTrace();
-            }
+                    e.printStackTrace();
+                }
             }
         });
-
-        //Сохранение параметров поиска в фойл
 
     }
     void initData() {
     }
 
+    //Сохранение параметров поиска в файл
     @FXML
     private void buttonOkClick(ActionEvent event) {
         event.consume();

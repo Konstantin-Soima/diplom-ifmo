@@ -1,6 +1,11 @@
 package common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Ads implements Serializable {
     //сериализация
@@ -13,35 +18,18 @@ public class Ads implements Serializable {
     //текст
     private String content;
     //объект телефона (не телефон а data:image)
-    private String phoneImg;
+    private String phone;
     //дата размещения
+    private Date date;
     //контактные данные
-    private String contactName;
-    private String contactLink;
+    private Profile profile;
 
-    public String getPhoneImg() {
-        return phoneImg;
+    public String getPhone() { return phone; }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public void setPhoneImg(String phoneImg) {
-        this.phoneImg = phoneImg;
-    }
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public String getContactLink() {
-        return contactLink;
-    }
-
-    public void setContactLink(String contactLink) {
-        this.contactLink = contactLink;
-    }
 
     public String getLink() {
         return link;
@@ -67,6 +55,23 @@ public class Ads implements Serializable {
         this.content = content;
     }
 
+    public Date getDate() { return date; }
+
+    public void setDate(Date date) { this.date = date; }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
+
+    public Profile getProfile() { return profile; }
+
+    public void setProfile(Profile profile) { this.profile = profile; }
+
+    public Ads() {
+        Date dateTime = new  Date();
+        this.date = dateTime;
+    }
+    @JsonIgnore
     public boolean isEmpty(){
         return link == null || link.isEmpty();
 
@@ -77,7 +82,7 @@ public class Ads implements Serializable {
                 "link='" + link + '\'' +
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
-                ", image='" + phoneImg + '\'' +
+                ", image='" + phone + '\'' +
                 '}';
     }
 }

@@ -1,21 +1,24 @@
 package worker;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Ads;
+import common.City;
+import common.Profile;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.safari.SafariDriver;
 import org.jsoup.Jsoup;
 import org.openqa.selenium.safari.SafariOptions;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Finder {
 
@@ -44,7 +47,7 @@ public class Finder {
         this.keywords = keywords;
     }
 
-    public void start() throws InterruptedException {
+    public void start() throws InterruptedException, IOException {
         //первый проход - использование поисковика авито
         for (String keyword: keywords) {
             driver.get(urlCatalog+"?q="+keyword);
@@ -63,8 +66,36 @@ public class Finder {
                 if (!ads.isEmpty()) {
                     listAds.add(ads);
                     //TODO: ДОбавить в бд
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String jsonProfile = objectMapper.writeValueAsString(ads.getProfile());
+                    System.out.println(jsonProfile);
+                    Document resultProfile =  Jsoup.connect("http://188.242.232.214:8080/addProfile")
+                            .header("Content-Type", "application/json")
+                            .header("Accept", "application/json")
+                            .followRedirects(true)
+                            .ignoreHttpErrors(true)
+                            .ignoreContentType(true)
+                            .userAgent("Mozilla/5.0 AppleWebKit/537.36 (KHTML," +
+                                    " like Gecko) Chrome/45.0.2454.4 Safari/537.36")
+                            .requestBody(jsonProfile)
+                            .post();
+                    System.out.println(resultProfile.toString());
+                    String jsonAd = objectMapper.writeValueAsString(ads);
+                    System.out.println(jsonAd);
+                    Document result =  Jsoup.connect("http://188.242.232.214:8080/addAds")
+                            .header("Content-Type", "application/json")
+                            .header("Accept", "application/json")
+                            .followRedirects(true)
+                            .ignoreHttpErrors(true)
+                            .ignoreContentType(true)
+                            .userAgent("Mozilla/5.0 AppleWebKit/537.36 (KHTML," +
+                                    " like Gecko) Chrome/45.0.2454.4 Safari/537.36")
+                            .requestBody(jsonAd)
+                            .post();
+
+                    System.out.println(result.toString());
+
                 }
-                //<h3 class="snippet-title" data-marker="item-title" data-shape="default"><a class="snippet-link" itemprop="url" href="/murino/muzykalnye_instrumenty/pocked_pod_line_6_1936728915?slocation=107621" target="_blank" title="Pocked POD Line 6 в Мурино">Pocked POD Line 6</a></h3>
             }
         }
         driver.close();
@@ -82,6 +113,7 @@ public class Finder {
             //System.out.println(document.body());
             String adsTitle = elements.first().html();
             ads.setName(adsTitle);
+            //Текст обьявления
             elements = document.select("div.item-description div.item-description-text p"); //текст обьявления
             String adsDescription = elements.first().html();
             ads.setContent(adsDescription);
@@ -89,10 +121,18 @@ public class Finder {
             //ссылка на продавца
             elements = document.select("div.seller-info-name.js-seller-info-name a"); //текст обьявления
             String adsContactLink = elements.first().attr("href");
-            ads.setContactLink(adsContactLink);
+            Profile contact = new Profile();
+            contact.setLink(adsContactLink);
             //имя продавца
-                    String adsContactName = elements.first().html();
-                    ads.setContactName(adsContactName);
+            String adsContactName = elements.first().html();
+            contact.setName(adsContactName);
+            //Дата обьявления
+            elements = document.select("div.title-info-metadata-item-redesign"); //текст обьявления
+            //String adsDate = elements.first().html().replace();
+            //Calendar cal = Calendar.getInstance();
+            //SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+            //cal.setTime(sdf.parse("Mon Mar 14 16:02:37 GMT 2011"));
+            //ads.setDate(cal);
             //Клик телефона
             Thread.sleep(4000);
             driver.findElement(By.xpath("//button[@data-marker='item-phone-button/card']")).click();//data-marker="item-phone-button/card"
@@ -103,10 +143,10 @@ public class Finder {
             elements = document.select("img.button-content-phone_size_l-1O5VB");
             if (elements.size()>0) { //Есть обьявления без номеров и оно может быть искомым
                 String adsPhone = elements.first().attr("src");
-                ads.setPhoneImg(adsPhone);
+                ads.setPhone(adsPhone);
             }
             System.out.println(ads);
-            Thread.sleep(500000);
+            Thread.sleep(5000);
             driver.navigate().back();
         } catch (InterruptedException e) {
             e.printStackTrace();
