@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -41,19 +40,7 @@ public class PushMessage extends Application {
 
         BorderPane borderPane = new BorderPane();
         //borderPane.setStyle("-fx-background-color: green;");
-
-
         //Todo:почему тулбар крашиться на маке
-        /*ToolBar toolBar = new ToolBar();
-
-        int height = 25;
-        toolBar.setPrefHeight(height);
-        toolBar.setMinHeight(height);
-        toolBar.setMaxHeight(height);
-        toolBar.getItems().add(new WindowButtons());
-
-        borderPane.setTop(toolBar);*/
-
         primaryStage.setScene(new Scene(borderPane, 300, 250));
         primaryStage.show();
     }

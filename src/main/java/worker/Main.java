@@ -55,7 +55,6 @@ public class Main {
                             Scene scene = new Scene(root);
                             stage.setScene(scene);
                             stage.show();
-                            System.out.println("закончился показ окна");
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -104,7 +103,7 @@ public class Main {
                 FinderThread finderThread = new FinderThread();
                 System.out.println("Запуск потока поисковика...");
                 finderThread.start();
-                Thread.sleep(60000);
+                Thread.sleep(15000);
                 finderThread.join();//При маленьком лимите лучше дождаться окончания потока
             } catch (InterruptedException e){
                 e.printStackTrace();
