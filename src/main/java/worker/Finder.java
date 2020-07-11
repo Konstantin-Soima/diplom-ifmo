@@ -1,10 +1,7 @@
 package worker;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Ads;
-import common.City;
-import common.Profile;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,7 +14,6 @@ import org.jsoup.Jsoup;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Finder {
@@ -62,12 +58,26 @@ public class Finder {
                 //System.out.println(element.absUrl("href").toString());
                 Thread.sleep(5000);
                 //TODO: роверка есть ли в базе ссылка
-                Ads ads = getPageContent("https://avito.ru"+element.attr("href"));
+                System.out.println("GET from "+"http://188.242.232.214:8080/adsByUrl?url=" + "https://avito.ru" + element.attr("href"));
+                String adsJson = Jsoup.connect("http://188.242.232.214:8080/adsByUrl?url=" + "https://avito.ru" +  element.attr("href")).ignoreContentType(true).execute().body();
+                System.out.println(adsJson);
+                Ads ads =new Ads();
+                if (!"null".equals(adsJson)) {
+                    ObjectMapper objectMapperAds = new ObjectMapper();
+                    Ads resultAds = objectMapperAds.readValue(adsJson, new TypeReference<Ads>() {
+                    });
+                    if(!resultAds.isEmpty()){
+                        ads=resultAds;
+                    }
+                    System.out.println("ПРИСВОЕННО ЗНАЧЕНИЕ ИЗ БАЗЫ");
+                }
+                else {
+                    ads = getPageContent("https://avito.ru" + element.attr("href"));
+                }
                 if (!ads.isEmpty()) {
                     listAds.add(ads);
-                    //TODO: ДОбавить в бд
                     ObjectMapper objectMapper = new ObjectMapper();
-                    String jsonProfile = objectMapper.writeValueAsString(ads.getProfile());
+                    /*String jsonProfile = objectMapper.writeValueAsString(ads.getProfile());
                     System.out.println(jsonProfile);
                     Document resultProfile =  Jsoup.connect("http://188.242.232.214:8080/addProfile")
                             .header("Content-Type", "application/json")
@@ -79,7 +89,7 @@ public class Finder {
                                     " like Gecko) Chrome/45.0.2454.4 Safari/537.36")
                             .requestBody(jsonProfile)
                             .post();
-                    System.out.println(resultProfile.toString());
+                    System.out.println(resultProfile.toString());*/
                     String jsonAd = objectMapper.writeValueAsString(ads);
                     System.out.println(jsonAd);
                     Document result =  Jsoup.connect("http://188.242.232.214:8080/addAds")
@@ -121,11 +131,11 @@ public class Finder {
             //ссылка на продавца
             elements = document.select("div.seller-info-name.js-seller-info-name a"); //текст обьявления
             String adsContactLink = elements.first().attr("href");
-            Profile contact = new Profile();
-            contact.setLink(adsContactLink);
+            //Profile contact = new Profile();
+            ads.setProfileLink(adsContactLink);
             //имя продавца
             String adsContactName = elements.first().html();
-            contact.setName(adsContactName);
+            ads.setProfileName(adsContactName);
             //Дата обьявления
             elements = document.select("div.title-info-metadata-item-redesign"); //текст обьявления
             //String adsDate = elements.first().html().replace();

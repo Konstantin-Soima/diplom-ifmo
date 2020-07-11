@@ -22,7 +22,8 @@ public class Ads implements Serializable {
     //дата размещения
     private Date date;
     //контактные данные
-    private Profile profile;
+    private String profileLink;
+    private String profileName;
 
     public String getPhone() { return phone; }
 
@@ -63,9 +64,21 @@ public class Ads implements Serializable {
 
     public void setId(int id) { this.id = id; }
 
-    public Profile getProfile() { return profile; }
+    public String getProfileLink() {
+        return profileLink;
+    }
 
-    public void setProfile(Profile profile) { this.profile = profile; }
+    public void setProfileLink(String profileLink) {
+        this.profileLink = profileLink;
+    }
+
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
+    }
 
     public Ads() {
         Date dateTime = new  Date();
