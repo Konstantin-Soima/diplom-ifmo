@@ -8,18 +8,19 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="604.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="worker.WorkWindowController">
+<AnchorPane prefHeight="604.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="worker.WorkWindowController">
    <children>
-      <ListView layoutX="360.0" layoutY="317.0" prefHeight="281.0" prefWidth="485.0" fx:id="categoryList" />
-      <Button layoutX="11.0" layoutY="549.0" mnemonicParsing="false" text="Отслеживать" fx:id="buttonOk"  onAction="#buttonOkClick"/>
-      <Label layoutX="14.0" layoutY="67.0" text="Ключевые слова для поиска" />
-      <Label layoutX="360.0" layoutY="295.0" text="Выбирите категорию:" />
+      <ListView fx:id="categoryList" layoutX="372.0" layoutY="327.0" prefHeight="268.0" prefWidth="466.0" />
+      <Button fx:id="buttonOk" layoutX="11.0" layoutY="549.0" mnemonicParsing="false" onAction="#buttonOkClick" text="Отслеживать" />
+      <Label layoutX="14.0" layoutY="77.0" text="Ключевые слова для поиска" />
+      <Label layoutX="372.0" layoutY="297.0" text="Выбирите категорию:" />
       <Label layoutX="14.0" layoutY="25.0" text="Название" />
-      <TextArea layoutX="14.0" layoutY="84.0" prefHeight="200.0" prefWidth="343.0" fx:id="textAreaKeyword"/>
-      <TextField layoutX="14.0" layoutY="42.0" prefHeight="25.0" prefWidth="343.0" fx:id="textFieldTitle"/>
-      <DatePicker layoutX="169.0" layoutY="295.0" fx:id="datePickerCalendar" />
+      <TextArea fx:id="textAreaKeyword" layoutX="14.0" layoutY="101.0" prefHeight="183.0" prefWidth="343.0" />
+      <TextField fx:id="textFieldTitle" layoutX="14.0" layoutY="42.0" prefHeight="25.0" prefWidth="343.0" />
+      <DatePicker fx:id="datePickerCalendar" layoutX="120.0" layoutY="295.0" />
       <Label layoutX="14.0" layoutY="300.0" text="Начиная с даты" />
-      <Label layoutX="360.0" layoutY="17.0" text="Выбирите город" />
-      <ListView layoutX="360.0" layoutY="34.0" prefHeight="260.0" prefWidth="485.0" fx:id="cityList"  />
+      <Label layoutX="372.0" layoutY="22.0" text="Выбирите город" />
+      <ListView fx:id="cityList" layoutX="372.0" layoutY="51.0" prefHeight="240.0" prefWidth="466.0" />
+      <Label fx:id="attentionMessage" layoutX="14.0" layoutY="340.0" text="Обязательно:&#10;Выбирите город,&#10;затем категорию поиска,&#10;затем введите название вещи,&#10;укажите  ключевые слова через запятую &quot;,&quot; которые &#10;гарантированно идентифицируют товар, например:&#10;iPhone,SE,телефон, заблокирован&#10;Укажите дату с которй начинать поиски" />
    </children>
 </AnchorPane>

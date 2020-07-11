@@ -104,7 +104,7 @@ public class Main {
         String title = properties.getProperty("title");
         String[] keyword = properties.getProperty("keywords").split(",");
         
-        String[] groups = {"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"};
+        String[] groups = {};//{"https://www.avito.ru/sankt-peterburg/muzykalnye_instrumenty/dlya_studii_i_kontsertov-ASgBAgICAUTEAsgK"};
         DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ld = LocalDate.parse(properties.getProperty("datestart"), DATEFORMATTER);
 

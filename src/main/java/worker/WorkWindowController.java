@@ -45,6 +45,9 @@ public class WorkWindowController  {
     @FXML
     private Button buttonOk;
 
+    @FXML
+    private Label attentionMessage;
+
     private ObservableList<City> observableList ;
     private ObservableList<Category> observableList2 ;
 
@@ -103,7 +106,27 @@ public class WorkWindowController  {
         event.consume();
         System.out.println("Кнопка нажалась");
         //TODO: Чек, что все поля заполнены
-
+        if (textFieldTitle.getText()==null || textFieldTitle.getText().trim().isEmpty()){
+            attentionMessage.setText("Вы не указали имя вещи");
+            return;
+        }
+        if (textAreaKeyword.getText()==null || textAreaKeyword.getText().trim().isEmpty()){
+            attentionMessage.setText("Вы не указали ключевые слова для поиска");
+            return;
+        }
+        if (cityList.getSelectionModel().getSelectedItems().size()==0){
+            attentionMessage.setText("Вы не выбрали город ");
+            return;
+        }
+        if (categoryList.getSelectionModel().getSelectedItems().size()==0){
+            attentionMessage.setText("Вы не выбрали категорию поиска ");
+            return;
+        }
+        if (datePickerCalendar.getValue()==null){
+            attentionMessage.setText("Вы не указали дату");
+            return;
+        }
+        //Файл свойств в корне
         Properties properties = new Properties();
         try (InputStream input = WorkWindowController.class.getClassLoader().getResourceAsStream("find.properties")){
             properties.load(input);
@@ -118,7 +141,6 @@ public class WorkWindowController  {
         properties.setProperty("keywords",textAreaKeyword.getText());
         properties.setProperty("title",textFieldTitle.getText());
         properties.setProperty("datestart",datePickerCalendar.getValue().toString());
-
         try {
             properties.store(new FileWriter("find.properties"),null);
         } catch (IOException e) {

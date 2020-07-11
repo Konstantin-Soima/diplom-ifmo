@@ -57,7 +57,6 @@ public class Finder {
                 System.out.println(element.html());
                 //System.out.println(element.absUrl("href").toString());
                 Thread.sleep(5000);
-                //TODO: роверка есть ли в базе ссылка
                 System.out.println("GET from "+"http://188.242.232.214:8080/adsByUrl?url=" + "https://avito.ru" + element.attr("href"));
                 String adsJson = Jsoup.connect("http://188.242.232.214:8080/adsByUrl?url=" + "https://avito.ru" +  element.attr("href")).ignoreContentType(true).execute().body();
                 System.out.println(adsJson);
@@ -77,19 +76,6 @@ public class Finder {
                 if (!ads.isEmpty()) {
                     listAds.add(ads);
                     ObjectMapper objectMapper = new ObjectMapper();
-                    /*String jsonProfile = objectMapper.writeValueAsString(ads.getProfile());
-                    System.out.println(jsonProfile);
-                    Document resultProfile =  Jsoup.connect("http://188.242.232.214:8080/addProfile")
-                            .header("Content-Type", "application/json")
-                            .header("Accept", "application/json")
-                            .followRedirects(true)
-                            .ignoreHttpErrors(true)
-                            .ignoreContentType(true)
-                            .userAgent("Mozilla/5.0 AppleWebKit/537.36 (KHTML," +
-                                    " like Gecko) Chrome/45.0.2454.4 Safari/537.36")
-                            .requestBody(jsonProfile)
-                            .post();
-                    System.out.println(resultProfile.toString());*/
                     String jsonAd = objectMapper.writeValueAsString(ads);
                     System.out.println(jsonAd);
                     Document result =  Jsoup.connect("http://188.242.232.214:8080/addAds")
@@ -116,6 +102,7 @@ public class Finder {
         Ads ads = new Ads();
         try { //визуально убидел
             driver.get(url);
+            Thread.sleep(4000);//Даём выполниться javasctipt который замедляет отображение кнопки телефона
             String pageResult = driver.getPageSource();
             Document document = Jsoup.parse(pageResult);
             Elements elements = document.select("div.title-info-main h1.title-info-title span.title-info-title-text"); //Заголовок
@@ -124,8 +111,14 @@ public class Finder {
             String adsTitle = elements.first().html();
             ads.setName(adsTitle);
             //Текст обьявления
-            elements = document.select("div.item-description div.item-description-text p"); //текст обьявления
-            String adsDescription = elements.first().html();
+            elements = document.select("div.item-description div.item-description-text"); //текст обьявления
+            String adsDescription;
+            if (elements.size() > 0) {
+                adsDescription = elements.first().text();
+            } else
+            {
+                adsDescription = "Описание товара отсутствует";
+            }
             ads.setContent(adsDescription);
             ads.setLink(url); //ссылка на обьявление
             //ссылка на продавца
@@ -144,7 +137,7 @@ public class Finder {
             //cal.setTime(sdf.parse("Mon Mar 14 16:02:37 GMT 2011"));
             //ads.setDate(cal);
             //Клик телефона
-            Thread.sleep(4000);
+            Thread.sleep(6000);
             driver.findElement(By.xpath("//button[@data-marker='item-phone-button/card']")).click();//data-marker="item-phone-button/card"
             //телефон
             Thread.sleep(4000);//Анимация
