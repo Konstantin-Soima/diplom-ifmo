@@ -13,8 +13,10 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.jsoup.Jsoup;
 import org.openqa.selenium.safari.SafariOptions;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public class Finder {
 
@@ -72,9 +74,6 @@ public class Finder {
                 }
                 else {
                     ads = getPageContent("https://avito.ru" + element.attr("href"));
-                }
-                if (!ads.isEmpty()) {
-                    listAds.add(ads);
                     ObjectMapper objectMapper = new ObjectMapper();
                     String jsonAd = objectMapper.writeValueAsString(ads);
                     System.out.println(jsonAd);
@@ -84,13 +83,28 @@ public class Finder {
                             .followRedirects(true)
                             .ignoreHttpErrors(true)
                             .ignoreContentType(true)
-                            .userAgent("Mozilla/5.0 AppleWebKit/537.36 (KHTML," +
-                                    " like Gecko) Chrome/45.0.2454.4 Safari/537.36")
+                            .userAgent("Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.4 Safari/537.36")
                             .requestBody(jsonAd)
                             .post();
-
                     System.out.println(result.toString());
+                }
+                if (!ads.isEmpty()) {
+                    listAds.add(ads);
+                    //проверка на наличие ключевых слов в обьявоении, если их достаточно много можно считать что это именно то что вы и искали
+                    int wordCount = 0;
+                    System.out.println("Склеиваем");
+                    String allContent = ads.getName()+ads.getContent()+ads.getProfileName();//Заголовок, контент, имя продавца
+                    for (String word: keywords ) {
+                        System.out.println("Ищим " + word);
+                        if (allContent.toLowerCase().contains(word.toLowerCase())) wordCount++;
+                    }
+                    if (wordCount>2){
+                        //Если что-то явно похоже - вывести popup
+                        System.out.println("Нашлось!! "+ads.toString());
 
+                        Main.trayIcon.displayMessage("Найдено", ads.getLink(), TrayIcon.MessageType.INFO);
+
+                    }
                 }
             }
         }
@@ -155,7 +169,6 @@ public class Finder {
             e.printStackTrace();
             System.out.println("Не удалось получить обьявление");
         }
-
         return ads;
     }
 

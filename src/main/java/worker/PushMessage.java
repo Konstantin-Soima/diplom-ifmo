@@ -40,7 +40,7 @@ public class PushMessage extends Application {
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         BorderPane borderPane = new BorderPane();
-        borderPane.setStyle("-fx-background-color: green;");
+        //borderPane.setStyle("-fx-background-color: green;");
 
 
         //Todo:почему тулбар крашиться на маке
